@@ -1,7 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Drawer,
@@ -65,14 +65,16 @@ import {
   ChevronsUpDown,
   EllipsisVertical,
   Filter,
+  PlusIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Separator } from "../ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
+import AthleteHubEducationTab from "./athlete-hub-home-tabs/athlete-hub-education-tab";
 
 const athletesSchema = z.object({
   id: z.string(),
@@ -103,7 +105,11 @@ const filterSchema = z.object({
   }),
 });
 
-export default function AccountsSectionTable({ view }: { view: string }) {
+export default function AthleteHubSectionTable({
+  view,
+}: {
+  view: "Education Blogs" | "Directories" | "Community Q&A" | "Oppurtunities";
+}) {
   const [data, setData] = useState<z.infer<typeof athletesSchema>[]>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -113,7 +119,9 @@ export default function AccountsSectionTable({ view }: { view: string }) {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [tab, setTab] = useState<"all" | "users" | "athletes">("all");
+  const [tab, setTab] = useState<
+    "Education Blogs" | "Directories" | "Community Q&A" | "Oppurtunities"
+  >("Education Blogs");
   const [filter, setFilter] = useState<z.infer<typeof filterSchema>>({
     status: {
       active: false,
@@ -313,164 +321,45 @@ export default function AccountsSectionTable({ view }: { view: string }) {
 
   return (
     <>
-      <div
-        className={`flex items-center  ${
-          isMobile ? "flex-col space-y-4" : "items-center justify-between"
-        }  `}
+      <Tabs
+        defaultValue="Education Blogs"
+        onValueChange={(value) =>
+          setTab(
+            value as
+              | "Education Blogs"
+              | "Directories"
+              | "Community Q&A"
+              | "Oppurtunities"
+          )
+        }
       >
-       <Tabs
-          defaultValue="all"
-          onValueChange={(value) =>
-            setTab(value as "all" | "users" | "athletes")
-          }
+        <div
+          className={`flex items-center  ${
+            isMobile ? "flex-col space-y-4" : "items-center justify-between"
+          }  `}
         >
           <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="athletes">Athletes</TabsTrigger>
+            <TabsTrigger value="Education Blogs">Education Blogs</TabsTrigger>
+            <TabsTrigger value="Directories">Directories</TabsTrigger>
+            <TabsTrigger value="Community Q&A">Community Q&A</TabsTrigger>
+            <TabsTrigger value="Oppurtunities">Oppurtunities</TabsTrigger>
           </TabsList>
-        </Tabs>
-        <div className="flex items-center gap-2 ">
-          <Input placeholder="Search Accounts ...." className="w-60" />
-          <div className="h-8 mx-4">
-            <Separator orientation="vertical" />
-          </div>
-          <FilterDropdown filter={filter} setFilter={setFilter} />
-        </div>
-        
-      </div>
-    
 
-      <div className="overflow-hidden rounded-lg border">
-        <Table>
-          <TableHeader className="bg-muted sticky top-0 z-10">
-            {table.getHeaderGroups().map((headerGroup, idx) => (
-              <TableRow key={idx}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody className="**:data-[slot=table-cell]:first:w-8">
-            {table.getRowModel().rows?.length ? (
-              <>
-                {table.getRowModel().rows.map((row, index) => (
-                  <TableRow
-                    key={index}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="relative z-0 "
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </>
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-between px-4">
-        <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="flex w-full items-center gap-8 lg:w-fit">
-          <div className="hidden items-center gap-2 lg:flex">
-            <Label htmlFor="rows-per-page" className="text-sm font-medium">
-              Rows per page
-            </Label>
-            <Select
-              value={`${table.getState().pagination.pageSize}`}
-              onValueChange={(value) => {
-                table.setPageSize(Number(value));
-              }}
-            >
-              <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                <SelectValue
-                  placeholder={table.getState().pagination.pageSize}
-                />
-              </SelectTrigger>
-              <SelectContent side="top">
-                {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <SelectItem key={pageSize} value={`${pageSize}`}>
-                    {pageSize}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex w-fit items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
-          </div>
-          <div className="ml-auto flex items-center gap-2 lg:ml-0">
-            <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <span className="sr-only">Go to first page</span>
-              <ChevronsLeft />
-            </Button>
-            <Button
-              variant="outline"
-              className="size-8"
-              size="icon"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <span className="sr-only">Go to previous page</span>
-              <ChevronLeft />
-            </Button>
-            <Button
-              variant="outline"
-              className="size-8"
-              size="icon"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <span className="sr-only">Go to next page</span>
-              <ChevronRight />
-            </Button>
-            <Button
-              variant="outline"
-              className="hidden size-8 lg:flex"
-              size="icon"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              <span className="sr-only">Go to last page</span>
-              <ChevronsRight />
+          <div className="flex items-center gap-2 ">
+            <Input placeholder="Search Athlete Hub ...." className="w-60" />
+            <div className="h-8 mx-4">
+              <Separator orientation="vertical" />
+            </div>
+            <Button variant="outline">
+              <PlusIcon className="h-4 w-4" />
+              Create New
             </Button>
           </div>
         </div>
-      </div>
+        <TabsContent value="Education Blogs">
+          <AthleteHubEducationTab />
+        </TabsContent>
+      </Tabs>
     </>
   );
 }

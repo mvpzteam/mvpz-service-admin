@@ -55,6 +55,7 @@ const AccountDetailPage = () => {
         form={form}
         setForm={setForm}
       />
+    
     </div>
   );
 };

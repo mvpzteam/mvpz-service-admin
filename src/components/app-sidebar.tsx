@@ -1,12 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  Frame,
-  Map,
-  PieChart,
-  SquareTerminal,
-} from "lucide-react";
+import { Frame, Map, PieChart, SquareTerminal } from "lucide-react";
 
 import {
   Sidebar,
@@ -68,10 +63,10 @@ const data = {
           title: "Accounts",
           url: "/accounts",
         },
-       {
-        title : "Orders",
-        url : "/orders",
-       },
+        {
+          title: "Orders",
+          url: "/orders",
+        },
         {
           title: "Settings",
           url: "/app-configurations",
@@ -87,17 +82,21 @@ const data = {
       isActive: false,
       items: [
         {
-            title: "Organistations",
-            url: "#",
-          },
-          {
-            title: "Tribes",
-            url: "#",
-          },
-          {
-            title: "Posts",
-            url: "#",
-          },
+          title: "Athlete Hub",
+          url: "/athlete-hub",
+        },
+        {
+          title: "Organistations",
+          url: "#",
+        },
+        {
+          title: "Tribes",
+          url: "#",
+        },
+        {
+          title: "Posts",
+          url: "#",
+        },
         {
           title: "Cards",
           url: "#",

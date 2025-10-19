@@ -33,8 +33,19 @@ import {
   TypographySmall,
 } from "@/components/ui/typography";
 import Image from "next/image";
-import { EllipsisVerticalIcon, Trash2, Upload } from "lucide-react";
+import {
+  ChevronRightIcon,
+  EllipsisVerticalIcon,
+  Trash2,
+  Upload,
+} from "lucide-react";
 import { toast } from "sonner";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarMenu,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 
 const AccountBasicDetailsSections = ({
   isEditable,
@@ -59,7 +70,7 @@ const AccountBasicDetailsSections = ({
           onClick: () => toast.dismiss(),
         },
       });
-    }else{
+    } else {
       toast("Account is now read only!", {
         description: "You can no longer edit the account details.",
         action: {
@@ -290,48 +301,124 @@ const AccountBasicDetailsSections = ({
           </CardFooter>
         )}
       </Card>
-      <Card className="w-full lg:w-auto lg:max-w-md lg:flex-initial lg:basis-5/12">
-        <CardHeader>
-          <TypographyLarge>Actions</TypographyLarge>
-          <TypographyMuted>
-            Manage necessary user actions including edit, resend email, and
-            account deactivation.
-          </TypographyMuted>
-        </CardHeader>
-        <CardContent>
-          <div className="flex justify-between items-center space-x-2">
-            <div className="flex flex-col space-y-2">
-              <TypographySmall>Update Account Info</TypographySmall>
-              <TypographyMuted>
-                Update the user info by turning the switch on.
-              </TypographyMuted>
-            </div>
-            <Switch checked={isEditable} onCheckedChange={handleMakeEditable} />
-          </div>
-          <Separator className="my-4" />
-          <div className="flex justify-between items-center space-x-2">
-            <div className="flex flex-col space-y-2">
-              <TypographySmall>Send Email</TypographySmall>
-              <TypographyMuted>
-                Send a custom email to the user. Email will be sent to the
-                user's email address.
-              </TypographyMuted>
-            </div>
-            <Button variant="outline">Send Email</Button>
-          </div>
-          <Separator className="my-4" />
-          <div className="flex flex-col space-y-2">
-            <TypographySmall>Delete Account</TypographySmall>
+      <div className="w-full lg:w-auto lg:max-w-md lg:flex-initial lg:basis-5/12 space-y-4">
+        <Card className="w-full">
+          <CardHeader>
+            <TypographyLarge>Abhishek's Activity </TypographyLarge>
             <TypographyMuted>
-              Permanently deletes the account, all associated data will assigned
-              platform default account.
+              Quick access to your created and joined content — collections,
+              cards, posts, and tribes.
             </TypographyMuted>
-            <Button variant="destructive" className="mt-2">
-              Delete Account
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </CardHeader>
+          <CardContent>
+            <a href="/accounts/@hunter.osborne/collections">
+              <div className="flex justify-between items-center hover:underline cursor-pointer ">
+                <div className="flex flex-col space-y-1">
+                  <Label>Collections</Label>
+                  <TypographyMuted>
+                    View all collections abhishek has created.
+                  </TypographyMuted>
+                </div>
+                <ChevronRightIcon size={16} />
+              </div>
+            </a>
+
+            <Separator className="my-4" />
+            <a href="/accounts/@hunter.osborne/collections/cards">
+              <div className="flex justify-between items-center hover:underline cursor-pointer ">
+                <div className="flex flex-col space-y-1">
+                  <Label>Collections Cards</Label>
+                  <TypographyMuted>
+                    Explore the cards abhishek has created for own.
+                  </TypographyMuted>
+                </div>
+                <ChevronRightIcon size={16} />
+              </div>
+            </a>
+            <Separator className="my-4" />
+            <a href="/accounts/@hunter.osborne/tribes/posts">
+              <div className="flex justify-between items-center hover:underline cursor-pointer ">
+                <div className="flex flex-col space-y-1">
+                  <Label>Tribes Posts</Label>
+                  <TypographyMuted>
+                    Browse through abhishek's published posts.
+                  </TypographyMuted>
+                </div>
+                <ChevronRightIcon size={16} />
+              </div>
+            </a>
+            <Separator className="my-4" />
+            <a href="/accounts/@hunter.osborne/tribes">
+              <div className="flex justify-between items-center hover:underline cursor-pointer ">
+                <div className="flex flex-col space-y-1">
+                  <Label>Joined Tribes</Label>
+                  <TypographyMuted>
+                    View all tribes abhishek has joined.
+                  </TypographyMuted>
+                </div>
+                <ChevronRightIcon size={16} />
+              </div>
+            </a>
+            <Separator className="my-4" />
+            <a href="/accounts/@hunter.osborne/referrals">
+              <div className="flex justify-between items-center hover:underline cursor-pointer ">
+                <div className="flex flex-col space-y-1">
+                  <Label>Referrals</Label>
+                  <TypographyMuted>
+                    View all tribes abhishek has referred.
+                  </TypographyMuted>
+                </div>
+                <ChevronRightIcon size={16} />
+              </div>
+            </a>
+          </CardContent>
+        </Card>
+        <Card className="w-full">
+          <CardHeader>
+            <TypographyLarge>Actions</TypographyLarge>
+            <TypographyMuted>
+              Manage necessary user actions including edit, resend email, and
+              account deactivation.
+            </TypographyMuted>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-center space-x-2">
+              <div className="flex flex-col space-y-2">
+                <TypographySmall>Update Account Info</TypographySmall>
+                <TypographyMuted>
+                  Update the user info by turning the switch on.
+                </TypographyMuted>
+              </div>
+              <Switch
+                checked={isEditable}
+                onCheckedChange={handleMakeEditable}
+              />
+            </div>
+            <Separator className="my-4" />
+            <div className="flex justify-between items-center space-x-2">
+              <div className="flex flex-col space-y-2">
+                <TypographySmall>Send Email</TypographySmall>
+                <TypographyMuted>
+                  Send a custom email to the user. Email will be sent to the
+                  user's email address.
+                </TypographyMuted>
+              </div>
+              <Button variant="outline">Send Email</Button>
+            </div>
+            <Separator className="my-4" />
+            <div className="flex flex-col space-y-2">
+              <TypographySmall>Delete Account</TypographySmall>
+              <TypographyMuted>
+                Permanently deletes the account, all associated data will
+                assigned platform default account.
+              </TypographyMuted>
+              <Button variant="destructive" className="mt-2">
+                Delete Account
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
